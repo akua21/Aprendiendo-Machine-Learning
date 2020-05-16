@@ -30,11 +30,12 @@ gameState[5, 5] = 1
 # Control de la pausa
 pause = False
 
-
+# Terminar partida
+end = False
 
 
 # Bucle de ejecucion
-while True:
+while not end:
 
     # Copia del juego
     newGameState = np.copy(gameState)
@@ -47,16 +48,23 @@ while True:
     ev = pygame.event.get()
 
     for event in ev:
+        if event.type == pygame.QUIT:
+            end = True
+
         if event.type == pygame.KEYDOWN:
             pause = not pause
 
-        mouseClick = pygame.mouse.get_pressed()[0]
+        mouseClickL = pygame.mouse.get_pressed()[0]
+        mouseClickR = pygame.mouse.get_pressed()[2]
 
-        if mouseClick == 1:
-            posMouse = pygame.mouse.get_pos()
-            cellPressed = (int(np.floor(posMouse[0]/sizeCells[0])), int(np.floor(posMouse[1]/sizeCells[1])))
-            print(cellPressed)
+        posMouse = pygame.mouse.get_pos()
+        cellPressed = (int(np.floor(posMouse[0]/sizeCells[0])), int(np.floor(posMouse[1]/sizeCells[1])))
+
+        if mouseClickL == 1:
             newGameState[cellPressed[0], cellPressed[1]] = 1
+
+        if mouseClickR == 1:
+            newGameState[cellPressed[0], cellPressed[1]] = 0
 
 
     # Bucle para recorrer las celdas
